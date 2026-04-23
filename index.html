@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Social Post Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
+        <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">AI Social Post Generator</h1>
+        <p class="text-center text-gray-600 mb-6">Generate engaging social media post ideas instantly!</p>
+        
+        <div class="mb-4">
+            <label for="topic" class="block text-gray-700 text-sm font-bold mb-2">Enter Topic/Keywords:</label>
+            <input type="text" id="topic" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="e.g., 'sustainable fashion tips', 'small business growth'">
+        </div>
+        
+        <button id="generateBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
+            Generate Posts
+        </button>
+        
+        <div id="loading" class="text-center mt-4 text-blue-500 hidden">
+            Generating ideas...
+        </div>
+
+        <div id="results" class="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200 hidden">
+            <h2 class="text-xl font-semibold mb-3 text-gray-800">Your Post Ideas:</h2>
+            <div id="postIdeas" class="space-y-3 text-gray-700">
+                <!-- Generated posts will appear here -->
+            </div>
+        </div>
+
+        <div id="paymentSection" class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md text-center hidden">
+            <p class="text-yellow-800 mb-3">Enjoying the ideas? Get unlimited generations for just $9.99!</p>
+            <button id="buyNowBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
+                Buy Now
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        const topicInput = document.getElementById('topic');
+        const generateBtn = document.getElementById('generateBtn');
+        const loadingDiv = document.getElementById('loading');
+        const resultsDiv = document.getElementById('results');
+        const postIdeasDiv = document.getElementById('postIdeas');
+        const paymentSection = document.getElementById('paymentSection');
+        const buyNowBtn = document.getElementById('buyNowBtn');
+
+        let generationCount = 0;
+
+        generateBtn.addEventListener('click', async () => {
+            const topic = topicInput.value.trim();
+            if (!topic) {
+                alert('Please enter a topic or keywords.');
+                return;
+            }
+
+            if (generationCount >= 2) {
+                paymentSection.classList.remove('hidden');
+                return;
+            }
+
+            loadingDiv.classList.remove('hidden');
+            resultsDiv.classList.add('hidden');
+            postIdeasDiv.innerHTML = '';
+
+            try {
+                // In a real app, this would be an API call to your backend
+                // const response = await fetch('/api/generate-posts', { method: 'POST', body: JSON.stringify({ topic }) });
+                // const data = await response.json();
+
+                // Mock API response for demonstration
+                const mockPosts = [
+                    `💡 **Post 1:** Dive into [Topic]! Share your top tip for [related activity] in the comments below. #${topic.replace(/\s/g, '')}Tips`,
+                    `🚀 **Post 2:** Did you know about this [Topic] hack? It saved me X hours! Check out my [link if applicable]. #ProductivityHack`,
+                    `🤔 **Post 3:** Opinion poll! What's your biggest challenge with [Topic] right now? Let's discuss! #CommunityTalk`
+                ];
+
+                mockPosts.forEach(post => {
+                    const p = document.createElement('p');
+                    p.className = 'bg-gray-100 p-3 rounded-md text-sm';
+                    p.innerHTML = post;
+                    postIdeasDiv.appendChild(p);
+                });
+
+                resultsDiv.classList.remove('hidden');
+                generationCount++;
+            } catch (error) {
+                console.error('Error generating posts:', error);
+                alert('Failed to generate posts. Please try again.');
+            } finally {
+                loadingDiv.classList.add('hidden');
+            }
+        });
+
+        buyNowBtn.addEventListener('click', () => {
+            alert('Redirecting to secure payment via Stripe for $9.99...');
+            // Implement Stripe Checkout redirection here
+        });
+    </script>
+</body>
+</html>
